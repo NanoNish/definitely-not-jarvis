@@ -8,7 +8,7 @@ readme = "../README.md"
 packages = [{ include = "." }]
 repository = "https://github.com/BURG3R5/definitely-not-jarvis"
 documentation = "https://github.com/BURG3R5/definitely-not-jarvis"
-keywords = []
+keywords = [ "llama" ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: End Users/Desktop",
@@ -17,6 +17,8 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
+slack-bolt = "^1.18.0"
+python-dotenv = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7"
