@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "definitely-not-jarvis"
+version = "0.0.1"
+description = "A helpful assistant"
+authors = ["Aditya Rajput <adiraj20072002@gmail.com>", "Others"]
+license = "MIT"
+readme = "../README.md"
+packages = [{ include = "." }]
+repository = "https://github.com/BURG3R5/definitely-not-jarvis"
+documentation = "https://github.com/BURG3R5/definitely-not-jarvis"
+keywords = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
