@@ -15,7 +15,8 @@ export default ({ env }) => {
           cipher: env('DATABASE_SSL_CIPHER', undefined),
           rejectUnauthorized: env.bool(
             'DATABASE_SSL_REJECT_UNAUTHORIZED',
-            true
+            // TODO: add ssl authorization (ie turn to true)
+            false
           ),
         },
         schema: env('DATABASE_SCHEMA', 'public'),
