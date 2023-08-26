@@ -19,6 +19,7 @@ classifiers = [
 python = "^3.10"
 slack-bolt = "^1.18.0"
 python-dotenv = "^1.0.0"
+clarifai-grpc = "^9.7.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7"
