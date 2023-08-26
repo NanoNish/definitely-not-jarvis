@@ -8,4 +8,4 @@ setup-unix:
 
 setup-win:
 	curl -sSL https://install.python-poetry.org | py -
-	poetry install
+	cd server && poetry install & &cd ..
