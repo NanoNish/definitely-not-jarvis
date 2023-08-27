@@ -44,8 +44,39 @@ def on_mention(ack: Ack, say: Say, payload: dict[str, Any]):
         knowledge=knowledge,
         user_input=user_input,
     )
-
-    say(text=response, thread_ts=ts)
+    blocks = [
+		{
+			"type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": f"{response}",
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "Try again",
+					},
+					"value": "try_again",
+					"action_id": "try_again"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "Contact a human",
+					},
+					"value": "contact_human",
+					"action_id": "contact_human"
+				}
+			]
+		}
+	]
+    say(blocks=blocks, text=response, thread_ts=ts)
 
 
 if __name__ == "__main__":
