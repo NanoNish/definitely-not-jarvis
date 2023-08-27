@@ -4,7 +4,8 @@
   "info": {
     "singularName": "knowledge",
     "pluralName": "knowledges",
-    "displayName": "knowledge"
+    "displayName": "knowledge",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,10 +13,12 @@
   "pluginOptions": {},
   "attributes": {
     "project": {
-      "type": "string"
+      "type": "string",
+      "default": "general"
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true
     }
   }
 }
