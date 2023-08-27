@@ -69,5 +69,9 @@ def try_again(ack: Ack, say: Say, body: Any):
     
     say(blocks=blocks, text=response_text, thread_ts=ts)
 
+@app.action("contact_human")
+def contact_human():
+    # contact human code comes here
+
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
