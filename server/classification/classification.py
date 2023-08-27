@@ -16,7 +16,7 @@ from langchain import PromptTemplate, LLMChain
 
 USER_ID = "meta"
 APP_ID = "Llama-2"
-MODEL_ID = "llama2-13b-chat"
+MODEL_ID = "llama2-70b-chat"
 # You can provide a specific model version as the model_version_id arg.
 # MODEL_VERSION_ID = "MODEL_VERSION_ID"
 
@@ -30,19 +30,19 @@ clarifai_llm = Clarifai(
 # --------------------------------------------------------------
 
 template = """
-Classify the Provided Query as 'issue', 'request', 'bugs', 'feature', 'how-to issues':
+Classify the Provided Query as 'issue', 'request', 'bug', 'feature', 'how-to issue':
 Example: 
 Query: This Github repo has degraded packages.
-Answer:issue.
+Answer:issue
 Example: 
 Query: How can I access the clarifai model from my workflow?
-Answer:how-to-issues.
+Answer:how-to-issue
 Example: 
 Query: The model keeps on throwing this error on this particular prompt.
-Answer:bugs.
+Answer:bug
 Example:
 Query: How to get pass this server auth?
-Answer:how-to-issues.
+Answer:how-to-issue
 
 Query: {question}
 Answer:"""
@@ -53,10 +53,8 @@ prompt = PromptTemplate(template=template, input_variables=["question"])
 llm_chain = LLMChain(prompt=prompt, llm=clarifai_llm)
 
 """ The User Prompt"""
-question = "How can I contact the manager?"
+question = "render overflow error"
 
-res = llm_chain.run(question)
-
+string_list = llm_chain.run(question).split("\n")
+res = string_list[0]
 print(res)
-
-
