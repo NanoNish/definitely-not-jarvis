@@ -2,7 +2,7 @@ import os
 import requests
 
 uri = os.environ.get("STRAPI_URL", "http://localhost:1337")
-header = {"Authorization":f"Bearer + {os.environ.get("STRAPI_TOKEN", "")}"}
+header = {"Authorization":f"Bearer {os.environ.get('STRAPI_TOKEN', '')}"}
 
 def get_all_faq():
     results = []
@@ -33,7 +33,3 @@ def get_all_knowledge():
         desc = data[i]['attributes']['description']
         results.append((proj, desc))
     return results 
-
-if __name__ == "__main__":
-    get_all_faq()
-    get_all_knowledge()

@@ -6,6 +6,7 @@ from slack_bolt import App, Ack, Say
 
 from clarifai import ClarifaiService
 from blocks import make_blocks
+from strapi import get_all_faq, get_all_knowledge
 
 load_dotenv()
 
@@ -27,10 +28,8 @@ BOT_ID = os.environ.get("SLACK_BOT_ID")
 # endregion
 
 # FAQs and Knowledge
-faqs: list = [("Who is BURG3R5?", "BURG3R5 is a so-called developer who loves to 'code' in HTML and CSS")]
-knowledge: list = ["Anand is a final-year student at IIT Roorkee. He has a strong passion" + \
-        "for using technology to solve real-world problems, and he is constantly" + \
-        "seeking new challenges to further improve his skills." ]
+faqs: list = get_all_faq()
+knowledge: list = get_all_knowledge()
 
 # Mentions
 @app.event("app_mention")
@@ -70,8 +69,11 @@ def try_again(ack: Ack, say: Say, body: Any):
     say(blocks=blocks, text=response_text, thread_ts=ts)
 
 @app.action("contact_human")
-def contact_human():
+def contact_human(ack: Ack, say: Say, body: Any):
     # contact human code comes here
+    ack()
+
+    print("clicked contact human")
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
