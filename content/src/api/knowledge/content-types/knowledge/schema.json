@@ -19,6 +19,9 @@
     "description": {
       "type": "text",
       "required": true
+    },
+    "subscriptions": {
+      "type": "json"
     }
   }
 }
