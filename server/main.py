@@ -91,11 +91,10 @@ def contact_human(ack: Ack, say: Say, body: Any):
         knowledge=knowledge,
         user_input=user_input,
     )
-
     user = body.get("user", None).get("id", None)
 
 
-    forward_channels = get_subscribers(project=project)
+    forward_channels = get_subscribers(project=project.lower()).get("channels", None)
     forward_blocks = make_forward_blocks(user_input, input_type, user)
     for channel in forward_channels:
         say(blocks=forward_blocks, text="forwarded query", channel=channel)
