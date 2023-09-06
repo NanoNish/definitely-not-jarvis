@@ -3,11 +3,12 @@ from typing import Any
 
 from dotenv import load_dotenv
 from slack_bolt import App, Ack, Say
-from clarifai import ClarifaiService
-from blocks import make_blocks
-from strapi import get_all_faq, get_all_knowledge
 
 load_dotenv()
+
+from clarifai import ClarifaiService
+from blocks import make_blocks, make_forward_blocks
+from strapi import get_all_faq, get_all_knowledge, get_subscribers
 
 
 # region init
@@ -91,9 +92,15 @@ def contact_human(ack: Ack, say: Say, body: Any):
         user_input=user_input,
     )
 
-    # TODO: get correct peeps
-    # TODO: send message to correct peeps
-    print(input_type, project)
+    user = body.get("user", None).get("id", None)
+
+
+    forward_channels = get_subscribers(project=project)
+    forward_blocks = make_forward_blocks(user_input, input_type, user)
+    for channel in forward_channels:
+        say(blocks=forward_blocks, text="forwarded query", channel=channel)
+
+    say(text="We have forwarded your query to the relevant people", thread_ts=ts)
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
