@@ -34,6 +34,7 @@ def get_all_knowledge():
         results.append((proj, desc))
     return results 
 
+# TODO: update this function
 def get_subscribers(canonical_name: str):
     results = []
     try:

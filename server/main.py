@@ -35,6 +35,7 @@ BOT_ID = os.environ.get("SLACK_BOT_ID")
 # endregion
 
 # FAQs and Knowledge
+# TODO: cache this and call periodically
 faqs: list = get_all_faq()
 knowledge: list = get_all_knowledge()
 
@@ -83,13 +84,14 @@ def contact_human(ack: Ack, say: Say, body: Any):
     
     user_input = body.get("message", None).get("blocks", None)[1].get("elements", None)[0].get("value", None)
     
-    response_text = classifier.predict(
+    project, prompt_type = classifier.predict(
         knowledge=knowledge,
         user_input=user_input,
     )
     
+    # TODO: get correct peeps
     # TODO: send message to correct peeps
-    print(response_text)
+    print(project, prompt_type)
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))
