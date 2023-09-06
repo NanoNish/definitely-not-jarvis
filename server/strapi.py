@@ -33,3 +33,18 @@ def get_all_knowledge():
         desc = data[i]['attributes']['description']
         results.append((proj, desc))
     return results 
+
+def get_subscribers(canonical_name: str):
+    results = []
+    try:
+        response = requests.get(uri + f"/api/projects?conanical_name=eq.{canonical_name}&select=*", headers = header)
+        response.raise_for_status()
+    except Exception as err:
+        print(f'[ERR] Strapi API | {err}')
+        return []
+    data = response.json()['data']
+    for i in range(len(data)):
+        proj = data[i]['attributes']['project']
+        desc = data[i]['attributes']['description']
+        results.append((proj, desc))
+    return results 
