@@ -17,11 +17,18 @@ app = App(
     signing_secret=os.environ.get("SLACK_SIGNING_SECRET"),
 )
 
-service = ClarifaiService(
+assistant = ClarifaiService(
     api_key=os.environ.get("CLARIFAI_API_KEY", ""),
     user_id=os.environ.get("CLARIFAI_USER_ID", ""),
     app_id=os.environ.get("CLARIFAI_APP_ID", ""),
-    workflow_id=os.environ.get("CLARIFAI_WORKFLOW_ID", ""),
+    workflow_id=os.environ.get("CLARIFAI_ASSISTANT_WORKFLOW_ID", ""),
+)
+
+classifier = ClarifaiService(
+    api_key=os.environ.get("CLARIFAI_API_KEY", ""),
+    user_id=os.environ.get("CLARIFAI_USER_ID", ""),
+    app_id=os.environ.get("CLARIFAI_APP_ID", ""),
+    workflow_id=os.environ.get("CLARIFAI_CLASSIFIER_WORKFLOW_ID", ""),
 )
 
 BOT_ID = os.environ.get("SLACK_BOT_ID")
@@ -40,7 +47,7 @@ def on_mention(ack: Ack, say: Say, payload: dict[str, Any]):
     
     user_input = payload.get("text", "").replace(f"<@{BOT_ID}>", "").strip()
     
-    response_text = service.predict(
+    response_text = assistant.predict(
         faqs=faqs,
         knowledge=knowledge,
         user_input=user_input,
@@ -58,7 +65,7 @@ def try_again(ack: Ack, say: Say, body: Any):
     
     user_input = body.get("message", None).get("blocks", None)[1].get("elements", None)[0].get("value", None)
     
-    response_text = service.predict(
+    response_text = assistant.predict(
         faqs=faqs,
         knowledge=knowledge,
         user_input=user_input,
@@ -70,10 +77,19 @@ def try_again(ack: Ack, say: Say, body: Any):
 
 @app.action("contact_human")
 def contact_human(ack: Ack, say: Say, body: Any):
-    # contact human code comes here
     ack()
-
-    print("clicked contact human")
+    
+    ts = body.get("container", None).get("thread_ts", None)
+    
+    user_input = body.get("message", None).get("blocks", None)[1].get("elements", None)[0].get("value", None)
+    
+    response_text = classifier.predict(
+        knowledge=knowledge,
+        user_input=user_input,
+    )
+    
+    # TODO: send message to correct peeps
+    print(response_text)
 
 if __name__ == "__main__":
     app.start(port=int(os.environ.get("PORT", 3000)))

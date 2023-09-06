@@ -32,3 +32,19 @@ def make_blocks(response, user_input):
     blocks.append(response_block)
     blocks.append(buttons_block)
     return blocks
+
+def make_forward_blocks(user_text, prompt_type):
+	blocks = []
+    response_block = {
+        "type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": f"{user_text}",
+			}, 
+			"text": {
+				"type": "plain_text",
+				"text": f"{prompt_type}",
+			}
+    }
+	blocks.append(response_block)
+	return blocks
