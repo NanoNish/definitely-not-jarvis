@@ -39,52 +39,55 @@ BOT_ID = os.environ.get("SLACK_BOT_ID")
 faqs: list = get_all_faq()
 knowledge: list = get_all_knowledge()
 
-# Mentions
 @app.event("app_mention")
 def on_mention(ack: Ack, say: Say, payload: dict[str, Any]):
     ack()
 
     ts = payload.get("thread_ts", None) or payload.get("ts", None)
-    
+
     user_input = payload.get("text", "").replace(f"<@{BOT_ID}>", "").strip()
-    
-    response_text = assistant.predict(
+
+    response_text = assistant.answer(
         faqs=faqs,
         knowledge=knowledge,
         user_input=user_input,
     )
-    
+
     blocks = make_blocks(response_text, user_input)
-    
+
     say(blocks=blocks, text=response_text, thread_ts=ts)
+
 
 @app.action("try_again")
 def try_again(ack: Ack, say: Say, body: Any):
     ack()
-    
+
     ts = body.get("container", None).get("thread_ts", None)
-    
-    user_input = body.get("message", None).get("blocks", None)[1].get("elements", None)[0].get("value", None)
-    
-    response_text = assistant.predict(
+
+    user_input = body.get("message", None).get("blocks", None)[
+        1].get("elements", None)[0].get("value", None)
+
+    response_text = assistant.answer(
         faqs=faqs,
         knowledge=knowledge,
         user_input=user_input,
     )
-    
+
     blocks = make_blocks(response_text, user_input)
-    
+
     say(blocks=blocks, text=response_text, thread_ts=ts)
+
 
 @app.action("contact_human")
 def contact_human(ack: Ack, say: Say, body: Any):
     ack()
-    
+
     ts = body.get("container", None).get("thread_ts", None)
-    
-    user_input = body.get("message", None).get("blocks", None)[1].get("elements", None)[0].get("value", None)
-    
-    project, prompt_type = classifier.predict(
+
+    user_input = body.get("message", None).get("blocks", None)[
+        1].get("elements", None)[0].get("value", None)
+
+    input_type, project = classifier.classify(
         knowledge=knowledge,
         user_input=user_input,
     )
@@ -93,7 +96,7 @@ def contact_human(ack: Ack, say: Say, body: Any):
 
 
     forward_channels = get_subscribers(project=project)
-    forward_blocks = make_forward_blocks(user_input, prompt_type, user)
+    forward_blocks = make_forward_blocks(user_input, input_type, user)
     for channel in forward_channels:
         say(blocks=forward_blocks, text="forwarded query", channel=channel)
 

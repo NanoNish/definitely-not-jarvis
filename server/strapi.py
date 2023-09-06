@@ -50,4 +50,12 @@ def get_subscribers(project: str):
         if project == data[i]['attributes']['project']:
             subs = data[i]['attributes']['subscriptions']
             results.append(subs)
+    
+    print(len(results))
+    if len(results) == 0:
+        for i in range(len(data)):
+            if "general" == data[i]['attributes']['project']:
+                subs = data[i]['attributes']['subscriptions']
+                results.append(subs)
+    print(results[0])
     return results[0] 
