@@ -33,18 +33,22 @@ def make_blocks(response, user_input):
     blocks.append(buttons_block)
     return blocks
 
-def make_forward_blocks(user_text, prompt_type):
-	blocks = []
-    response_block = {
+def make_forward_blocks(prompt, prompt_type, user):
+    blocks = []
+    prompt_type_block = {
+        "type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": f"We recieved a query of type *{prompt_type}* from <@{user}>",
+			}, 
+	}
+    prompt_block = {
         "type": "section",
 			"text": {
 				"type": "plain_text",
-				"text": f"{user_text}",
+				"text": f"{prompt}",
 			}, 
-			"text": {
-				"type": "plain_text",
-				"text": f"{prompt_type}",
-			}
-    }
-	blocks.append(response_block)
-	return blocks
+	}
+    blocks.append(prompt_type_block)
+    blocks.append(prompt_block)
+    return blocks
